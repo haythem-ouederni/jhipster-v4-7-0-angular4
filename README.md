@@ -119,6 +119,7 @@ Unit tests are run by [Karma][] and written with [Jasmine][]. They're located in
 
 UI end-to-end tests are powered by [Protractor][], which is built on top of WebDriverJS. They're located in [src/test/javascript/e2e](src/test/javascript/e2e)
 and can be run by starting Spring Boot in one terminal (`./mvnw spring-boot:run`) and running the tests (`yarn run e2e`) in a second one.
+
 ### Other tests
 
 Performance tests are run by [Gatling][] and written in Scala. They're located in [src/test/gatling](src/test/gatling) and can be run with:
@@ -126,6 +127,12 @@ Performance tests are run by [Gatling][] and written in Scala. They're located i
     ./mvnw gatling:execute
 
 For more information, refer to the [Running tests page][].
+
+### Bundle visualizer
+
+During production or development builds you can visualize bundles' content as convenient interactive zoomable treemap using [webpack-bundle-analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer). It would help you optimize your code and reduce bundles' size.
+
+To activate or deactivate this option just edit the value of the `WEBPACK_BUNDLE_ANALYZER_ACTIVE` constant within `webpack.prod.js` and `webpack.dev.js` files.
 
 ## Using Docker to simplify development (optional)
 

@@ -9,29 +9,30 @@ const utils = require('./utils.js');
 const commonConfig = require('./webpack.common.js');
 
 const ENV = 'development';
+const WEBPACK_BUNDLE_ANALYZER_ACTIVE = false;
 
-module.exports = webpackMerge(commonConfig({ env: ENV }), {
+module.exports = webpackMerge(commonConfig({env: ENV, webpackBundleAnalyzerActive: WEBPACK_BUNDLE_ANALYZER_ACTIVE}), {
     devtool: 'eval-source-map',
     devServer: {
         contentBase: './target/www',
-        proxy: [{
-            context: [
-                /* jhipster-needle-add-entity-to-webpack - JHipster will add entity api paths here */
-                '/api',
-                '/management',
-                '/swagger-resources',
-                '/v2/api-docs',
-                '/h2-console'
-            ],
-            target: 'http://127.0.0.1:8080',
-            secure: false
-        },{
-            context: [
-                '/websocket'
-            ],
-            target: 'ws://127.0.0.1:8080',
-            ws: true
-        }]
+        proxy: [
+            {
+                context: [
+                    /* jhipster-needle-add-entity-to-webpack - JHipster will add entity api paths here */
+                    '/api',
+                    '/management',
+                    '/swagger-resources',
+                    '/v2/api-docs',
+                    '/h2-console'
+                ],
+                target: 'http://127.0.0.1:8080',
+                secure: false
+            }, {
+                context: ['/websocket'],
+                target: 'ws://127.0.0.1:8080',
+                ws: true
+            }
+        ]
     },
     entry: {
         polyfills: './src/main/webapp/app/polyfills',
@@ -44,38 +45,41 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
         chunkFilename: 'app/[id].chunk.js'
     },
     module: {
-        rules: [{
-            test: /\.ts$/,
-            enforce: 'pre',
-            loaders: 'tslint-loader',
-            exclude: ['node_modules', new RegExp('reflect-metadata\\' + path.sep + 'Reflect\\.ts')]
-        },
-        {
-            test: /\.ts$/,
-            loaders: [
-                'angular2-template-loader',
-                'awesome-typescript-loader'
-            ],
-            exclude: ['node_modules/generator-jhipster']
-        },
-        {
-            test: /\.scss$/,
-            loaders: ['to-string-loader', 'css-loader', 'sass-loader'],
-            exclude: /(vendor\.scss|global\.scss)/
-        },
-        {
-            test: /(vendor\.scss|global\.scss)/,
-            loaders: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
-        },
-        {
-            test: /\.css$/,
-            loaders: ['to-string-loader', 'css-loader'],
-            exclude: /(vendor\.css|global\.css)/
-        },
-        {
-            test: /(vendor\.css|global\.css)/,
-            loaders: ['style-loader', 'css-loader']
-        }]
+        rules: [
+            {
+                test: /\.ts$/,
+                enforce: 'pre',
+                loaders: 'tslint-loader',
+                exclude: [
+                    'node_modules',
+                    new RegExp('reflect-metadata\\' + path.sep + 'Reflect\\.ts')
+                ]
+            }, {
+                test: /\.ts$/,
+                loaders: [
+                    'angular2-template-loader', 'awesome-typescript-loader'
+                ],
+                exclude: ['node_modules/generator-jhipster']
+            }, {
+                test: /\.scss$/,
+                loaders: [
+                    'to-string-loader', 'css-loader', 'sass-loader'
+                ],
+                exclude: /(vendor\.scss|global\.scss)/
+            }, {
+                test: /(vendor\.scss|global\.scss)/,
+                loaders: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+            }, {
+                test: /\.css$/,
+                loaders: [
+                    'to-string-loader', 'css-loader'
+                ],
+                exclude: /(vendor\.css|global\.css)/
+            }, {
+                test: /(vendor\.css|global\.css)/,
+                loaders: ['style-loader', 'css-loader']
+            }
+        ]
     },
     plugins: [
         new BrowserSyncPlugin({
@@ -85,15 +89,11 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
                 target: 'http://localhost:9060',
                 ws: true
             }
-        }, {
-            reload: false
-        }),
+        }, {reload: false}),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.NamedModulesPlugin(),
         new writeFilePlugin(),
-        new webpack.WatchIgnorePlugin([
-            utils.root('src/test'),
-        ]),
+        new webpack.WatchIgnorePlugin([utils.root('src/test')]),
         new WebpackNotifierPlugin({
             title: 'JHipster',
             contentImage: path.join(__dirname, 'logo-jhipster.png')

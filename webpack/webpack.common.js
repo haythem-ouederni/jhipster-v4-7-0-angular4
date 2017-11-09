@@ -10,8 +10,91 @@ const utils = require('./utils.js');
 module.exports = (options) => {
     const DATAS = {
         VERSION: `'${utils.parseVersion()}'`,
-        DEBUG_INFO_ENABLED: options.env === 'development'
+        DEBUG_INFO_ENABLED: options.env === 'development',
+        WEBPACK_BUNDLE_ANALYZER_ACTIVE: options.webpackBundleAnalyzerActive
     };
+
+    let plugins = [
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify(options.env)
+            }
+        }),
+        new webpack
+            .optimize
+            .CommonsChunkPlugin({name: 'polyfills', chunks: ['polyfills']}),
+        new webpack
+            .optimize
+            .CommonsChunkPlugin({
+                name: 'vendor',
+                chunks: ['main'],
+                minChunks: module => utils.isExternalLib(module)
+            }),
+        new webpack
+            .optimize
+            .CommonsChunkPlugin({
+                name: ['polyfills', 'vendor'].reverse()
+            }),
+        new webpack
+            .optimize
+            .CommonsChunkPlugin({name: ['manifest'], minChunks: Infinity}),
+        /**
+         * See: https://github.com/angular/angular/issues/11580
+         */
+        new webpack.ContextReplacementPlugin(/angular(\\|\/)core(\\|\/)@angular/, utils.root('src/main/webapp/app'), {}),
+        new CopyWebpackPlugin([
+            {
+                from: './node_modules/core-js/client/shim.min.js',
+                to: 'core-js-shim.min.js'
+            }, {
+                from: './node_modules/swagger-ui/dist/css',
+                to: 'swagger-ui/dist/css'
+            }, {
+                from: './node_modules/swagger-ui/dist/lib',
+                to: 'swagger-ui/dist/lib'
+            }, {
+                from: './node_modules/swagger-ui/dist/swagger-ui.min.js',
+                to: 'swagger-ui/dist/swagger-ui.min.js'
+            }, {
+                from: './src/main/webapp/swagger-ui/',
+                to: 'swagger-ui'
+            }, {
+                from: './src/main/webapp/favicon.ico',
+                to: 'favicon.ico'
+            }, {
+                from: './src/main/webapp/manifest.webapp',
+                to: 'manifest.webapp'
+            },
+            // { from: './src/main/webapp/sw.js', to: 'sw.js' },
+            {
+                from: './src/main/webapp/robots.txt',
+                to: 'robots.txt'
+            }
+        ]),
+        new webpack.ProvidePlugin({$: "jquery", jQuery: "jquery"}),
+        new MergeJsonWebpackPlugin({
+            output: {
+                groupBy: [
+                    {
+                        pattern: "./src/main/webapp/i18n/en/*.json",
+                        fileName: "./i18n/en.json"
+                    }, {
+                        pattern: "./src/main/webapp/i18n/fr/*.json",
+                        fileName: "./i18n/fr.json"
+                    }
+                    // jhipster-needle-i18n-language-webpack - JHipster will add/remove languages in
+                    // this array
+                ]
+            }
+        }),
+        new HtmlWebpackPlugin({template: './src/main/webapp/index.html', chunksSortMode: 'dependency', inject: 'body'}),
+        new StringReplacePlugin()
+    ];
+
+    if (DATAS.WEBPACK_BUNDLE_ANALYZER_ACTIVE) {
+        plugins.push(new BundleAnalyzerPlugin({analyzerMode: 'static', reportFilename: '../bundle-report.html'}));
+    }
+
     return {
         resolve: {
             extensions: [
@@ -57,82 +140,6 @@ module.exports = (options) => {
                 }
             ]
         },
-        plugins: [
-            new webpack.DefinePlugin({
-                'process.env': {
-                    'NODE_ENV': JSON.stringify(options.env)
-                }
-            }),
-            new webpack
-                .optimize
-                .CommonsChunkPlugin({name: 'polyfills', chunks: ['polyfills']}),
-            new webpack
-                .optimize
-                .CommonsChunkPlugin({
-                    name: 'vendor',
-                    chunks: ['main'],
-                    minChunks: module => utils.isExternalLib(module)
-                }),
-            new webpack
-                .optimize
-                .CommonsChunkPlugin({
-                    name: ['polyfills', 'vendor'].reverse()
-                }),
-            new webpack
-                .optimize
-                .CommonsChunkPlugin({name: ['manifest'], minChunks: Infinity}),
-            /**
-             * See: https://github.com/angular/angular/issues/11580
-             */
-            new webpack.ContextReplacementPlugin(/angular(\\|\/)core(\\|\/)@angular/, utils.root('src/main/webapp/app'), {}),
-            new CopyWebpackPlugin([
-                {
-                    from: './node_modules/core-js/client/shim.min.js',
-                    to: 'core-js-shim.min.js'
-                }, {
-                    from: './node_modules/swagger-ui/dist/css',
-                    to: 'swagger-ui/dist/css'
-                }, {
-                    from: './node_modules/swagger-ui/dist/lib',
-                    to: 'swagger-ui/dist/lib'
-                }, {
-                    from: './node_modules/swagger-ui/dist/swagger-ui.min.js',
-                    to: 'swagger-ui/dist/swagger-ui.min.js'
-                }, {
-                    from: './src/main/webapp/swagger-ui/',
-                    to: 'swagger-ui'
-                }, {
-                    from: './src/main/webapp/favicon.ico',
-                    to: 'favicon.ico'
-                }, {
-                    from: './src/main/webapp/manifest.webapp',
-                    to: 'manifest.webapp'
-                },
-                // { from: './src/main/webapp/sw.js', to: 'sw.js' },
-                {
-                    from: './src/main/webapp/robots.txt',
-                    to: 'robots.txt'
-                }
-            ]),
-            new webpack.ProvidePlugin({$: "jquery", jQuery: "jquery"}),
-            new MergeJsonWebpackPlugin({
-                output: {
-                    groupBy: [
-                        {
-                            pattern: "./src/main/webapp/i18n/en/*.json",
-                            fileName: "./i18n/en.json"
-                        }, {
-                            pattern: "./src/main/webapp/i18n/fr/*.json",
-                            fileName: "./i18n/fr.json"
-                        }
-                        // jhipster-needle-i18n-language-webpack - JHipster will add/remove languages in
-                        // this array
-                    ]
-                }
-            }),
-            new HtmlWebpackPlugin({template: './src/main/webapp/index.html', chunksSortMode: 'dependency', inject: 'body'}),
-            new StringReplacePlugin(),
-            new BundleAnalyzerPlugin()
-        ]
+        plugins: plugins
     };
 };

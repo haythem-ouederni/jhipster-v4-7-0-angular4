@@ -10,10 +10,11 @@ const utils = require('./utils.js');
 const commonConfig = require('./webpack.common.js');
 
 const ENV = 'production';
+const WEBPACK_BUNDLE_ANALYZER_ACTIVE = true;
 const extractSASS = new ExtractTextPlugin(`[name]-sass.[hash].css`);
 const extractCSS = new ExtractTextPlugin(`[name].[hash].css`);
 
-module.exports = webpackMerge(commonConfig({ env: ENV }), {
+module.exports = webpackMerge(commonConfig({ env: ENV, webpackBundleAnalyzerActive: WEBPACK_BUNDLE_ANALYZER_ACTIVE }), {
     // Enable source maps. Please note that this will slow down the build.
     // You have to enable it in UglifyJSPlugin config below and in tsconfig-aot.json as well
     // devtool: 'source-map',
