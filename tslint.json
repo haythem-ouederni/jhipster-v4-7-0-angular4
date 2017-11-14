@@ -13,7 +13,8 @@
         "forin": true,
         "indent": [
             true,
-            "spaces"
+            "spaces",
+            4
         ],
         "label-position": true,
         "max-line-length": [
@@ -23,8 +24,12 @@
         "member-access": false,
         "member-ordering": [
             true,
-            "static-before-instance",
-            "variables-before-functions"
+            {
+                "order": [
+                    "static-before-instance",
+                    "variables-before-functions"
+                ]
+            }
         ],
         "no-arg": true,
         "no-bitwise": true,
@@ -41,11 +46,15 @@
         "no-duplicate-variable": true,
         "no-empty": false,
         "no-eval": true,
-        "no-inferrable-types": [true],
+        "no-inferrable-types": [
+            true
+        ],
         "no-shadowed-variable": true,
         "no-string-literal": false,
         "no-switch-case-fall-through": true,
-        "no-trailing-whitespace": true,
+        "no-trailing-whitespace": {
+            "severity": "warning"
+        },
         "no-unused-expression": true,
         "no-use-before-declare": true,
         "no-var-keyword": true,
@@ -63,6 +72,7 @@
         ],
         "radix": true,
         "semicolon": [
+            true,
             "always"
         ],
         "triple-equals": [
@@ -88,16 +98,36 @@
             "check-separator",
             "check-type"
         ],
-        "prefer-const": true,
-        "arrow-parens": [true],
-        "arrow-return-shorthand": [true],
+        "prefer-const": false,
+        "arrow-parens": [
+            true
+        ],
+        "arrow-return-shorthand": [
+            true
+        ],
         "import-spacing": true,
-        "no-consecutive-blank-lines": [true],
+        "no-consecutive-blank-lines": {
+            "severity": "warning"
+        },
         "object-literal-shorthand": true,
-        "space-before-function-paren": [true, "never"],
-
-        "directive-selector": [true, "attribute", "jhi", "camelCase"],
-        "component-selector": [true, "element", "jhi", "kebab-case"],
+        "space-before-function-paren": {
+            "options": [
+                "never"
+            ],
+            "severity": "warning"
+        },
+        "directive-selector": [
+            true,
+            "attribute",
+            "jhi",
+            "camelCase"
+        ],
+        "component-selector": [
+            true,
+            "element",
+            "jhi",
+            "kebab-case"
+        ],
         "use-input-property-decorator": true,
         "use-output-property-decorator": true,
         "use-host-property-decorator": true,

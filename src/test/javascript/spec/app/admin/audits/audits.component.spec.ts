@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { NgbPaginationConfig} from '@ng-bootstrap/ng-bootstrap';
 import { JhiParseLinks } from 'ng-jhipster';
 import { JhipsterAngular4TestModule } from '../../../test.module';
-import { PaginationConfig } from '../../../../../../main/webapp/app/blocks/config/uib-pagination.config'
+import { PaginationConfig } from '../../../../../../main/webapp/app/blocks/config/uib-pagination.config';
 import { AuditsComponent } from '../../../../../../main/webapp/app/admin/audits/audits.component';
 import { AuditsService } from '../../../../../../main/webapp/app/admin/audits/audits.service';
 import { ITEMS_PER_PAGE } from '../../../../../../main/webapp/app/shared';

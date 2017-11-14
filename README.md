@@ -30,6 +30,10 @@ Add the `help` flag on any command to see how you can use it. For example, `yarn
 
 The `yarn run` command will list all of the scripts available to run for this project.
 
+### Important notes
+
+`sass-lint` should be installed globally to be able to execute `yarn sasslint` command to lint the different sass files: `npm install -g sass-lint`.
+
 ### Service workers
 
 Service workers are commented by default, to enable them please uncomment the following code.

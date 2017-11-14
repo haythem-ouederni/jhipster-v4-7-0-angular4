@@ -1,98 +1,4 @@
 import { element, by, ElementFinder } from 'protractor';
-export class NavBarPage {
-    entityMenu = element(by.id('entity-menu'));
-    accountMenu = element(by.id('account-menu'));
-    adminMenu: ElementFinder;
-    signIn = element(by.id('login'));
-    register = element(by.css('[routerLink="register"]'));
-    signOut = element(by.id('logout'));
-    passwordMenu = element(by.css('[routerLink="password"]'));
-    settingsMenu = element(by.css('[routerLink="settings"]'));
-
-    constructor(asAdmin?: Boolean) {
-        if (asAdmin) {
-            this.adminMenu = element(by.id('admin-menu'));
-        }
-    }
-
-    clickOnEntityMenu() {
-        return this.entityMenu.click();
-    }
-
-    clickOnAccountMenu() {
-        return this.accountMenu.click();
-    }
-
-    clickOnAdminMenu() {
-        return this.adminMenu.click();
-    }
-
-    clickOnSignIn() {
-        return this.signIn.click();
-    }
-
-    clickOnRegister() {
-        return this.signIn.click();
-    }
-
-    clickOnSignOut() {
-        return this.signOut.click();
-    }
-
-    clickOnPasswordMenu() {
-        return this.passwordMenu.click();
-    }
-
-    clickOnSettingsMenu() {
-        return this.settingsMenu.click();
-    }
-
-    clickOnEntity(entityName: string) {
-        return element(by.css('[routerLink="' + entityName + '"]')).click();
-    }
-
-    clickOnAdmin(entityName: string) {
-        return element(by.css('[routerLink="' + entityName + '"]')).click();
-    }
-
-    getSignInPage() {
-        this.clickOnAccountMenu();
-        this.clickOnSignIn();
-        return new SignInPage();
-    }
-
-    getPasswordPage() {
-        this.clickOnAccountMenu();
-        this.clickOnPasswordMenu();
-        return new PasswordPage();
-    }
-
-    getSettingsPage() {
-        this.clickOnAccountMenu();
-        this.clickOnSettingsMenu();
-        return new SettingsPage();
-    }
-
-    goToEntity(entityName: string) {
-        this.clickOnEntityMenu();
-        return this.clickOnEntity(entityName);
-    }
-
-    goToSignInPage() {
-        this.clickOnAccountMenu();
-        this.clickOnSignIn();
-    }
-
-    goToPasswordMenu() {
-        this.clickOnAccountMenu();
-        this.clickOnPasswordMenu();
-    }
-
-    autoSignOut() {
-        this.clickOnAccountMenu();
-        this.clickOnSignOut();
-    }
-}
 
 export class SignInPage {
     username = element(by.id('username'));
@@ -222,5 +128,100 @@ export class SettingsPage {
 
     save() {
         return this.saveButton.click();
+    }
+}
+
+export class NavBarPage {
+    entityMenu = element(by.id('entity-menu'));
+    accountMenu = element(by.id('account-menu'));
+    adminMenu: ElementFinder;
+    signIn = element(by.id('login'));
+    register = element(by.css('[routerLink="register"]'));
+    signOut = element(by.id('logout'));
+    passwordMenu = element(by.css('[routerLink="password"]'));
+    settingsMenu = element(by.css('[routerLink="settings"]'));
+
+    constructor(asAdmin?: Boolean) {
+        if (asAdmin) {
+            this.adminMenu = element(by.id('admin-menu'));
+        }
+    }
+
+    clickOnEntityMenu() {
+        return this.entityMenu.click();
+    }
+
+    clickOnAccountMenu() {
+        return this.accountMenu.click();
+    }
+
+    clickOnAdminMenu() {
+        return this.adminMenu.click();
+    }
+
+    clickOnSignIn() {
+        return this.signIn.click();
+    }
+
+    clickOnRegister() {
+        return this.signIn.click();
+    }
+
+    clickOnSignOut() {
+        return this.signOut.click();
+    }
+
+    clickOnPasswordMenu() {
+        return this.passwordMenu.click();
+    }
+
+    clickOnSettingsMenu() {
+        return this.settingsMenu.click();
+    }
+
+    clickOnEntity(entityName: string) {
+        return element(by.css('[routerLink="' + entityName + '"]')).click();
+    }
+
+    clickOnAdmin(entityName: string) {
+        return element(by.css('[routerLink="' + entityName + '"]')).click();
+    }
+
+    getSignInPage() {
+        this.clickOnAccountMenu();
+        this.clickOnSignIn();
+        return new SignInPage();
+    }
+
+    getPasswordPage() {
+        this.clickOnAccountMenu();
+        this.clickOnPasswordMenu();
+        return new PasswordPage();
+    }
+
+    getSettingsPage() {
+        this.clickOnAccountMenu();
+        this.clickOnSettingsMenu();
+        return new SettingsPage();
+    }
+
+    goToEntity(entityName: string) {
+        this.clickOnEntityMenu();
+        return this.clickOnEntity(entityName);
+    }
+
+    goToSignInPage() {
+        this.clickOnAccountMenu();
+        this.clickOnSignIn();
+    }
+
+    goToPasswordMenu() {
+        this.clickOnAccountMenu();
+        this.clickOnPasswordMenu();
+    }
+
+    autoSignOut() {
+        this.clickOnAccountMenu();
+        this.clickOnSignOut();
     }
 }
